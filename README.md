@@ -20,7 +20,7 @@ This repository is a [pnpm workspace](https://pnpm.io/workspaces). Make sure you
 It contains 3 packages:
 - core: Xml/Xslt/Xsd implementations.
 - matiec: WASM toolchain to compile & run matiec as a WASM module using [emscripten](https://emscripten.org/index.html).
-- matiec-demo: A demo of matiec using nuxt & monaco editor in browser. [DEMO]()
+- matiec-demo: A demo of matiec using nuxt & monaco editor in browser. [DEMO](https://3c427fed.matiec-bolt.pages.dev/)
 
 There is currently no build system such as [lerna](https://github.com/lerna/lerna) to have global build/test scripts.
 
