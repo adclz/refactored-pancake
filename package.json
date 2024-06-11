@@ -1,0 +1,11 @@
+{
+    "name": "beremiz-web",
+    "private": true,
+    "packageManager": "pnpm@8.14.0",
+    "resolutions": {
+      "@types/node": "18.11.9"
+    },
+    "devDependencies": {
+      "@types/node": "18.11.9"
+    }
+  }
