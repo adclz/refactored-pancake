@@ -29,14 +29,34 @@ const xsltToSef = (id: string) => {
   return code
 }
 
+const poToJson = (id: string) => {
+  const po2JsonPath = path.join(process.cwd(), modulesDir[0], "/gettext.js/bin/po2json")
+
+  const poJsonPath = path.join(tmp, path.basename(id))
+  child_process.spawnSync("node", [`${po2JsonPath}`, `${id}`, `${poJsonPath}`])
+
+  let code = fs.readFileSync(poJsonPath, 'utf8')
+      .replaceAll("%s", "%1")
+
+  for (let i = 1; i <= 5; i++)
+    code = code.replaceAll(`a${i}`, `%${i}`)
+  
+  fs.rmSync(poJsonPath)
+  return code
+}
+
 export default defineConfig({
   plugins: [
     {
       name: 'assets transform',
       transform(code, id) {
-        if ((/\.(xml|xsd|xslt|csv)$/).test(id)) {
+        if ((/\.(xml|xsd|xslt|csv|po)$/).test(id)) {
 
           if ((/\.(xslt)$/).test(id)) code = xsltToSef(id)
+          if ((/\.(po)$/).test(id)) return {
+              code: `export default ${poToJson(id)}`,
+              map: { mappings: "" }
+            }
 
           const json = JSON.stringify(code)
             .replace(/\u2028/g, '\\u2028')

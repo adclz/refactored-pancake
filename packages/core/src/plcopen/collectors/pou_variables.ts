@@ -1,5 +1,3 @@
-import path from "node:path";
-import fs from "node:fs";
 import saxon from 'saxon-js';
 import { CLASS_TYPES, POU_TYPES, VAR_CLASS_INFOS } from "@/src/plcopen/constant/items.js"
 import xslt from "@/src/plcopen/xslt/pou_variables.xslt"

@@ -16,10 +16,14 @@
       "@/*": [
         "./*"
       ],
-      "@/src": [
+      "@/src": [ 
         "./src"
       ]
-    }
+    },
+    "types": [
+      "./src/types/types.d.ts",
+      "./src/types/saxon.d.ts"
+    ]
   },
   "tsc-alias": {
     "verbose": false,

@@ -14,6 +14,7 @@ This repo has two main goals:
 | [XPath](#Saxon)                     | ✔️      | ✔️      |
 | [Xsd validation](#XSD)              | ✔️      | ✔️      |
 | [Matiec WASM](#Matiec)              | ✔️      | ✔️      |
+| [gettext](#gettext)                 | ✔️      | ✔️      |
 
 This repository is a [pnpm workspace](https://pnpm.io/workspaces). Make sure you have pnpm and Node.js 18+ installed.
 
@@ -161,11 +162,13 @@ graph LR
     D[.sef.json]
     E[.js]
     F[.d.ts]
+    G[.po]
 
     subgraph "src folder"
         A
         B
         C
+        G
     end
 
     subgraph "dist folder"
@@ -176,13 +179,25 @@ graph LR
     A -- emit js with tsc --> E
     A -- emit declarations with tsc --> F
     B -- compile using XSLT3 XX --> D
-    C -- transforme --> E
-    D -- transforme --> E
+    C -- transform --> E
+    D -- transform --> E
+    G -- transform --> E
 ```
 
 Both .js & .d.ts are emitted for typescript, so non-ts user can use the package in a pure javascript project.
 
 This configuration allows us to import all non-js files directly in js, esbuild will take care of the rest.
+
+# gettext
+
+Support for gettext is available thanks to [gettext.js](https://github.com/guillaumepotier/gettext.js)
+
+gettext is available as a global singleton and locales can be loaded automatically.
+
+> [!WARNING]
+> gettext.js does not seem to support "%s" & "%a1" placeholders. 
+> Therefore, all placeholders have been converted to numeric ones.
+> The original .po files remain unchanged, everything is done during the build process. 
 
 # Front end frameworks
 

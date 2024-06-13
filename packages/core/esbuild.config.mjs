@@ -24,7 +24,24 @@ const xsltToSef = (id) => {
     child_process.spawnSync("node", [`${xslt3Path}`, `-xsl:${tmpFile}`, `-export:${sefJsonPath}`])
 
     const code = fs.readFileSync(sefJsonPath, 'utf8')
+        .replace("%s", "%1")
     fs.rmSync(sefJsonPath)
+    return code
+}
+
+const poToJson = (id) => {
+    const po2JsonPath = path.join(process.cwd(), modulesDir[0], "/gettext.js/bin/po2json")
+
+    const poJsonPath = path.join(tmp, path.basename(id))
+    child_process.spawnSync("node", [`${po2JsonPath}`, `${id}`, `${poJsonPath}`])
+
+    let code = fs.readFileSync(poJsonPath, 'utf8')
+        .replaceAll("%s", "%1")
+
+    for (let i = 1; i <= 5; i++)
+        code = code.replaceAll(`a${i}`, `%${i}`)
+  
+    fs.rmSync(poJsonPath)
     return code
 }
 
@@ -38,10 +55,16 @@ export const esbuildOptions = {
         {
             name: 'assets transform',
             setup(build) {
-                build.onLoad({ filter: /\.(xml|xsd|xslt|csv)$/ }, async (args) => {
+                build.onLoad({ filter: /\.(xml|xsd|xslt|csv|po)$/ }, async (args) => {
                     if ((/\.(xslt)$/).test(args.path)) {
                         return {
                             contents: xsltToSef(args.path),
+                            loader: 'json'
+                        };
+                    }
+                    if ((/\.(po)$/).test(args.path)) {
+                        return {
+                            contents: poToJson(args.path),
                             loader: 'json'
                         };
                     }

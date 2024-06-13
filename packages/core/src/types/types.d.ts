@@ -1,4 +1,5 @@
-// Declare xslt / xml / csv files as typescript modules globally
+// Declare xslt / xml / xsd / csv / po files as typescript modules globally
+
 declare type xslt = string
 declare module "*.xslt" {
     const doc: xslt;
@@ -20,6 +21,12 @@ declare module "*.xsd" {
 declare type csv = string
 declare module "*.csv" {
     const doc: csv;
+    export default doc;
+}
+
+declare type po = import("gettext.js").JsonData;
+declare module "*.po" {
+    const doc: po;
     export default doc;
 }
 
